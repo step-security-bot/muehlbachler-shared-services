@@ -7,20 +7,11 @@ on:
       - main
   workflow_dispatch:
 
+permissions:
+  id-token: write
+  contents: read
+
 jobs:
-  conform:
-    runs-on: ubuntu-latest
-    name: Conform
-
-    steps:
-      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
-        with:
-          fetch-depth: 0
-
-      - uses: siderolabs/conform@v0.1.0-alpha.27
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-
   preview:
     runs-on: ubuntu-latest
     name: Pulumi Preview
@@ -38,6 +29,16 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
+      - uses: 'google-github-actions/auth@v1'
+        with:
+          workload_identity_provider: ${{ secrets.GOOGLE_WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ secrets.GOOGLE_WORKLOAD_IDENTITY_SERVICE_ACCOUNT }}
+
+      - uses: aws-actions/configure-aws-credentials@v3
+        with:
+          role-to-assume: ${{ secrets.AWS_IDENTITY_ROLE_ARN }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
       - run: |
           npm install -g yarn
 
@@ -49,14 +50,11 @@ jobs:
         with:
           command: preview
           stack-name: prod
+          refresh: true
         env:
-          AWS_REGION: "${{ secrets.AWS_REGION }}"
-          AWS_ACCESS_KEY_ID: "${{ secrets.AWS_ACCESS_KEY_ID }}"
-          AWS_SECRET_ACCESS_KEY: "${{ secrets.AWS_SECRET_ACCESS_KEY }}"
           CLOUDSDK_COMPUTE_REGION: "${{ secrets.CLOUDSDK_COMPUTE_REGION }}"
-          CLOUDSDK_CORE_PROJECT: "${{ secrets.CLOUDSDK_CORE_PROJECT }}"
           PULUMI_ACCESS_TOKEN: "${{ secrets.PULUMI_ACCESS_TOKEN }}"
-          GOOGLE_CREDENTIALS: "${{ secrets.GOOGLE_APPLICATION_CREDENTIALS_JSON }}"
+          AWS_REGION: "${{ secrets.AWS_REGION }}"
           DOPPLER_TOKEN: "${{ secrets.DOPPLER_TOKEN }}"
 
   deploy:
@@ -78,6 +76,16 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
+      - uses: 'google-github-actions/auth@v1'
+        with:
+          workload_identity_provider: ${{ secrets.GOOGLE_WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ secrets.GOOGLE_WORKLOAD_IDENTITY_SERVICE_ACCOUNT }}
+
+      - uses: aws-actions/configure-aws-credentials@v3
+        with:
+          role-to-assume: ${{ secrets.AWS_IDENTITY_ROLE_ARN }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
       - run: |
           npm install -g yarn
 
@@ -90,11 +98,7 @@ jobs:
           command: up
           stack-name: prod
         env:
-          AWS_REGION: "${{ secrets.AWS_REGION }}"
-          AWS_ACCESS_KEY_ID: "${{ secrets.AWS_ACCESS_KEY_ID }}"
-          AWS_SECRET_ACCESS_KEY: "${{ secrets.AWS_SECRET_ACCESS_KEY }}"
           CLOUDSDK_COMPUTE_REGION: "${{ secrets.CLOUDSDK_COMPUTE_REGION }}"
-          CLOUDSDK_CORE_PROJECT: "${{ secrets.CLOUDSDK_CORE_PROJECT }}"
           PULUMI_ACCESS_TOKEN: "${{ secrets.PULUMI_ACCESS_TOKEN }}"
-          GOOGLE_CREDENTIALS: "${{ secrets.GOOGLE_APPLICATION_CREDENTIALS_JSON }}"
+          AWS_REGION: "${{ secrets.AWS_REGION }}"
           DOPPLER_TOKEN: "${{ secrets.DOPPLER_TOKEN }}"
