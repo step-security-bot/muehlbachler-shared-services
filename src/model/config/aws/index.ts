@@ -3,14 +3,14 @@ import { AWSRdsConfig } from './rds';
 /**
  * Defines AWS data.
  */
-export type AWSData = {
+export interface AWSData {
   readonly postgres: AWSRdsConfig;
-};
+}
 
 /**
  * Defines AWS VPC data.
  */
-export type AWSVpcData = {
+export interface AWSVpcData {
   readonly cidr: string;
   readonly ipv6Only: boolean;
-};
+}

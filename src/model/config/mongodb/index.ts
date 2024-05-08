@@ -3,6 +3,6 @@ import { MongoDBClusterConfig } from './cluster';
 /**
  * Defines MongoDB data.
  */
-export type MongoDBData = {
+export interface MongoDBData {
   readonly cluster: MongoDBClusterConfig;
-};
+}

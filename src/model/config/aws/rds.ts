@@ -3,7 +3,7 @@ import { AWSVpcData } from '.';
 /**
  * Defines AWS RDS data.
  */
-export type AWSRdsConfig = {
+export interface AWSRdsConfig {
   readonly name: string;
   readonly vpc: AWSVpcData;
   readonly instanceClass: string;
@@ -13,12 +13,12 @@ export type AWSRdsConfig = {
   readonly dbAdminUser: string;
   readonly backupRetention: number;
   readonly deletionProtection: boolean;
-};
+}
 
 /**
  * Defines AWS RDS storage data.
  */
-export type AWSRdsStorageData = {
+export interface AWSRdsStorageData {
   readonly allocated: number;
   readonly maximum: number;
-};
+}

@@ -73,6 +73,7 @@ export const createAWSVpc = async (
     {},
   );
 
+  // eslint-disable-next-line functional/immutable-data
   const subnets = (await aws.getAvailabilityZones({ state: 'available' })).names
     .sort()
     .map(
