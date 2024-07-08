@@ -123,7 +123,6 @@ jobs:
             github-muehlbachler-shared-services/data/google-cloud ci_service_account | GOOGLE_WORKLOAD_IDENTITY_SERVICE_ACCOUNT ;
             github-muehlbachler-shared-services/data/aws region | AWS_REGION ;
             github-muehlbachler-shared-services/data/aws identity_role_arn | AWS_IDENTITY_ROLE_ARN ;
-            github-muehlbachler-shared-services/data/doppler token | DOPPLER_TOKEN ;
             github-muehlbachler-shared-services/data/mongodb-atlas public_key | MONGODB_ATLAS_PUBLIC_KEY ;
             github-muehlbachler-shared-services/data/mongodb-atlas private_key | MONGODB_ATLAS_PRIVATE_KEY
 

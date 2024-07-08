@@ -42,7 +42,6 @@ To successfully run, and configure the Pulumi plugins, you need to set a list of
 - `AWS_REGION`: the AWS region
 - `AWS_ACCESS_KEY_ID`: the AWS access key identifier
 - `AWS_SECRET_ACCESS_KEY`: the AWS secret access key
-- `DOPPLER_TOKEN`: the Doppler access token (not a project token!)
 
 ---
 

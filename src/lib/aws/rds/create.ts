@@ -4,7 +4,6 @@ import { all } from '@pulumi/pulumi';
 import { AWSRdsConfig } from '../../../model/config/aws/rds';
 import { AWSRdsData } from '../../../model/data/aws/rds';
 import { commonLabels, environment, globalName } from '../../configuration';
-import { writeToDoppler } from '../../util/doppler/secret';
 import { createRandomPassword } from '../../util/random';
 import { writeToVault } from '../../util/vault/secret';
 import { createAWSVpc } from '../network/create';
@@ -120,30 +119,6 @@ export const createRDSInstance = async (
     {
       ignoreChanges: ['kmsKeyId', 'performanceInsightsKmsKeyId'],
     },
-  );
-
-  writeToDoppler(
-    `AWS_RDS_${data.name.toUpperCase()}_ENDPOINT`,
-    instance.endpoint,
-    globalName,
-  );
-
-  writeToDoppler(
-    `AWS_RDS_${data.name.toUpperCase()}_PORT`,
-    instance.port.apply((port) => port.toString()),
-    globalName,
-  );
-
-  writeToDoppler(
-    `AWS_RDS_${data.name.toUpperCase()}_ADMIN_USERNAME`,
-    instance.username,
-    globalName,
-  );
-
-  writeToDoppler(
-    `AWS_RDS_${data.name.toUpperCase()}_ADMIN_PASSWORD`,
-    password.password,
-    globalName,
   );
 
   writeToVault(
