@@ -39,7 +39,6 @@ jobs:
           exportToken: true
           outputToken: true
           secrets: |
-            github-muehlbachler-shared-services/data/pulumi access_token | PULUMI_ACCESS_TOKEN ;
             github-muehlbachler-shared-services/data/google-cloud region | CLOUDSDK_COMPUTE_REGION ;
             github-muehlbachler-shared-services/data/google-cloud workload_identity_provider | GOOGLE_WORKLOAD_IDENTITY_PROVIDER ;
             github-muehlbachler-shared-services/data/google-cloud ci_service_account | GOOGLE_WORKLOAD_IDENTITY_SERVICE_ACCOUNT ;
@@ -48,7 +47,13 @@ jobs:
             github-muehlbachler-shared-services/data/mongodb-atlas public_key | MONGODB_ATLAS_PUBLIC_KEY ;
             github-muehlbachler-shared-services/data/mongodb-atlas private_key | MONGODB_ATLAS_PRIVATE_KEY
 
-      - uses: 'google-github-actions/auth@v2'
+      - uses: pulumi/auth-actions@v1
+        with:
+          organization: muhlba91
+          requested-token-type: urn:pulumi:token-type:access_token:personal
+          scope: user:muhlba91
+
+      - uses: google-github-actions/auth@v2
         with:
           workload_identity_provider: ${{ env.GOOGLE_WORKLOAD_IDENTITY_PROVIDER }}
           service_account: ${{ env.GOOGLE_WORKLOAD_IDENTITY_SERVICE_ACCOUNT }}
